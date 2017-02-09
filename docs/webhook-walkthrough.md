@@ -98,11 +98,19 @@ def api_helloworld_webhook(request, user_profile, client,
 ```
 
 The above code imports the required functions and defines the main webhook
-function `api_helloworld_webhook`, decorating it with `api_key_only_webhook_view` and
-`has_request_variables`.
+function `api_helloworld_webhook`, decorating it with `api_key_only_webhook_view`
+and `has_request_variables`. The 'has_request_variables' decorator allows you to
+access request variables with `REQ()`. You can find more about `REQ` and request
+variables in [Writing views](writing-views.html#request-variables)
+
+The 'api_key_only_webhook_view' decorator indicates that the 3rd party service will
+send the authorization as an API key in the query parameters. If your service uses
+HTTP Basic authentication, you would instead use the `authenticated_rest_api_view`
+decorator.
 
 You must pass the name of your webhook to the `api_key_only_webhook_view`
-decorator. Here we have used `HelloWorld`. To be consistent with Zulip code
+decorator so your webhook can access the `user_profile` and `client` fields
+from the request. Here we have used `HelloWorld`. To be consistent with Zulip code
 style, use the name of the product you are integrating in camel case, spelled
 as the product spells its own name (except always first letter upper-case).
 
