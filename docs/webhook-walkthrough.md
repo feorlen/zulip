@@ -37,8 +37,10 @@ only one fixture, `zerver/fixtures/helloworld/helloworld_hello.json`:
 
 When writing your own webhook integration, you'll want to write a test function
 for each distinct message condition your webhook supports. You'll also need a
-corresponding fixture for each of these tests. See [Step 3: Create
-tests](#step-4-create-tests) or [Testing](testing.html) for further details.
+corresponding fixture for each of these tests. Depending on the type of data
+the 3rd party service sends, your fixture may contain JSON, URL encoded text, or
+some other kind of data. See [Step 3: Create tests](#step-4-create-tests) or 
+[Testing](testing.html) for further details.
 
 ## Step 1: Initialize your webhook python package
 
@@ -234,7 +236,10 @@ class HelloWorldHookTests(WebhookTestCase):
 
 In the above example, `STREAM_NAME`, `URL_TEMPLATE`, and `FIXTURE_DIR_NAME` refer
 to class attributes from the base class, `WebhookTestCase`. These are needed by
-`send_and_test_stream_message` to determine how to execute your test.
+`send_and_test_stream_message` to determine how to execute your test. In `get_body`,
+the first argument in the call to  `self.fixture_data` specifies the prefix of
+your fixture file names, and `file_type` their type. Common types are `json` and 
+`txt`.
 
 When writing tests for your webhook, you'll want to include one test function
 (and corresponding fixture) per each distinct message condition that your
