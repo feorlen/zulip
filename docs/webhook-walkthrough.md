@@ -270,8 +270,10 @@ As well as a new fixture `helloworld_goodbye.json` in
 }
 ```
 
-Once you have written some tests, you can run just these new tests from within
-the Zulip development environment with this command:
+Also consider if your integration should have negative tests, a test where the
+data from the test fixture should result in an error. Once you have written some
+tests, you can run just these new tests from within the Zulip development
+environment with this command:
 
 ```
 (zulip-venv)vagrant@vagrant-ubuntu-trusty-64:/srv/zulip$
