@@ -270,10 +270,14 @@ As well as a new fixture `helloworld_goodbye.json` in
 }
 ```
 
-Also consider if your integration should have negative tests, a test where the
-data from the test fixture should result in an error. Once you have written some
-tests, you can run just these new tests from within the Zulip development
-environment with this command:
+Also consider if your integration should have negative tests, where the data
+from the test fixture should result in an error. You may need to explicitly
+set up your negative test's actions and success conditions rather than using a
+helper function like `send_and_test_stream_message`. You can find an example
+of this in the tests for the WordPress webhook integration.
+
+Once you have written some tests, you can run just these new tests from within
+the Zulip development environment with this command:
 
 ```
 (zulip-venv)vagrant@vagrant-ubuntu-trusty-64:/srv/zulip$
