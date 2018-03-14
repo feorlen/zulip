@@ -29,7 +29,8 @@ from zerver.lib.utils import statsd
 from zerver.models import Realm, flush_per_request_caches, get_realm
 
 import libhoney
-libhoney.init(writekey="d62197abe719778544798c32f2f0b0ac", dataset="zulipdev-feorlen")
+#libhoney.init(writekey="d62197abe719778544798c32f2f0b0ac", dataset="zulipdev-feorlen")
+libhoney.init(writekey="d62197abe719778544798c32f2f0b0ac", dataset="django-requests")
 
 logger = logging.getLogger('zulip.requests')
 
@@ -231,7 +232,7 @@ def write_log_line(log_data: MutableMapping[str, Any], path: Text, method: str, 
     #print("end log_data")
     #print("")
 
-    libhoney.send_now(log_data)    
+    #libhoney.send_now(log_data)    
     
 class LogRequests(MiddlewareMixin):
     # We primarily are doing logging using the process_view hook, but
