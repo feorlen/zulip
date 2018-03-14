@@ -31,7 +31,7 @@ from zerver.models import Realm, flush_per_request_caches, get_realm
 import libhoney
 import os
 mywritekey = os.environ["WRITEKEY"]
-libhoney.init(writekey=mywritekey, dataset="django-requests")
+libhoney.init(writekey=mywritekey, dataset="django-requests-prod")
 
 logger = logging.getLogger('zulip.requests')
 
