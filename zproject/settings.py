@@ -463,6 +463,7 @@ MIDDLEWARE = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'zerver.honey_middleware.HoneyMiddleware',
 )
 
 # Make sure these come after authentication middleware.

@@ -28,7 +28,12 @@ from zerver.lib.subdomains import get_subdomain
 from zerver.lib.utils import statsd
 from zerver.models import Realm, flush_per_request_caches, get_realm
 
+import libhoney
+libhoney.init(writekey="d62197abe719778544798c32f2f0b0ac", dataset="zulipdev-feorlen")
+
 logger = logging.getLogger('zulip.requests')
+
+
 
 def record_request_stop_data(log_data: MutableMapping[str, Any]) -> None:
     log_data['time_stopped'] = time.time()
@@ -95,6 +100,7 @@ def write_log_line(log_data: MutableMapping[str, Any], path: Text, method: str, 
                    client_name: Text, status_code: int=200, error_content: Optional[AnyStr]=None,
                    error_content_iter: Optional[Iterable[AnyStr]]=None) -> None:
     assert error_content is None or error_content_iter is None
+
     if error_content is not None:
         error_content_iter = (error_content,)
 
@@ -220,6 +226,13 @@ def write_log_line(log_data: MutableMapping[str, Any], path: Text, method: str, 
             error_data = u"[content more than 100 characters]"
         logger.info('status=%3d, data=%s, uid=%s' % (status_code, error_data, email))
 
+    #print("at end of write_log_line")
+    #print("log_data = " + str(log_data))
+    #print("end log_data")
+    #print("")
+
+    libhoney.send_now(log_data)    
+    
 class LogRequests(MiddlewareMixin):
     # We primarily are doing logging using the process_view hook, but
     # for some views, process_view isn't run, so we call the start
