@@ -27,7 +27,7 @@ class HoneyMiddleware(MiddlewareMixin):
       "isAjax": request.is_ajax(),
       "isUserAuthenticated": request.user.is_authenticated(),
       #"username": request.user.username,
-      "email": request.user.email,
+      #"email": request.user.email,
       "host": request.get_host(),
       "ip": request.META['REMOTE_ADDR'],
       "responseTime_ms": response_time * 1000,
