@@ -6,7 +6,7 @@ import time
 class HoneyMiddleware(MiddlewareMixin):
   def __init__(self, get_response=None):
     self.builder = libhoney.Builder()
-    self.builder.writekey = os.environ["WRITEKEY"]
+    #self.builder.writekey = os.environ["WRITEKEY"]
     self.builder.dataset = "django-requests"
     
     super(HoneyMiddleware, self).__init__(get_response)
