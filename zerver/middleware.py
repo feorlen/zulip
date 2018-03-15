@@ -61,6 +61,7 @@ libhoney.init(writekey=HONEYCOMB_WRITEKEY, dataset="django-requests-prod")
 
 logger = logging.getLogger('zulip.requests')
 
+logger.info("middleware.py after libhoney.init")
 
 
 def record_request_stop_data(log_data: MutableMapping[str, Any]) -> None:

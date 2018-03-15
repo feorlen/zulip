@@ -2,6 +2,7 @@ from django.utils.deprecation import MiddlewareMixin
 import libhoney
 import os
 import time
+import logging
 
 class HoneyMiddleware(MiddlewareMixin):
   def __init__(self, get_response=None):
@@ -17,7 +18,11 @@ class HoneyMiddleware(MiddlewareMixin):
   
   def process_response(self, request, response):
     response_time = time.time() - request.start_time
-      
+
+    logger = logging.getLogger('zulip.requests')
+    logger.info("honey_middleware process_response request =")
+    logger.info(str(request))
+    
     self.builder.send_now({
       "method": request.method,
       "scheme": request.scheme,
