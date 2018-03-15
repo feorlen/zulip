@@ -21,6 +21,8 @@ import configparser
 from zerver.lib.db import TimeTrackingConnection
 import zerver.lib.logging_util
 
+import libhoney
+
 ########################################################################
 # INITIAL SETTINGS
 ########################################################################
@@ -64,6 +66,14 @@ SERVER_GENERATION = int(time.time())
 # Key to authenticate this server to zulip.org for push notifications, etc.
 ZULIP_ORG_KEY = get_secret("zulip_org_key")
 ZULIP_ORG_ID = get_secret("zulip_org_id")
+
+# Honeycomb authentication
+HONEYCOMB_WRITEKEY = get_secret("honeycomb_writekey")
+#HONEYCOMB_DATASET = "django-requests"
+HONEYCOMB_DATASET = "django-requests-prod"
+libhoney.init(writekey=HONEYCOMB_WRITEKEY, dataset=HONEYCOMB_DATASET)
+    
+
 
 if 'DEBUG' not in globals():
     # Uncomment end of next line to test CSS minification.

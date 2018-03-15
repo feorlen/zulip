@@ -1,4 +1,5 @@
 from django.utils.deprecation import MiddlewareMixin
+from django.conf import settings
 import libhoney
 import os
 import time
@@ -7,9 +8,13 @@ import logging
 class HoneyMiddleware(MiddlewareMixin):
   def __init__(self, get_response=None):
     self.builder = libhoney.Builder()
-    #self.builder.writekey = os.environ["WRITEKEY"]
-    #self.builder.dataset = "django-requests"
-    
+    self.builder.writekey = settings.HONEYCOMB_WRITEKEY
+    self.builder.dataset = settings.HONEYCOMB_DATASET
+
+    #init done in settings.py
+    #libhoney.init(writekey=settings.HONEYCOMB_WRITEKEY,
+    #              dataset=settings.HONEYCOMB_DATASET)
+
     super(HoneyMiddleware, self).__init__(get_response)
     
   def process_request(self, request):
