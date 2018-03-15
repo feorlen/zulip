@@ -27,6 +27,11 @@ class HoneyMiddleware(MiddlewareMixin):
     logger = logging.getLogger('zulip.requests')
     logger.info("honey_middleware process_response request =")
     logger.info(str(request))
+
+    if request.user.is_authenticated():
+      user_email = request.user.email
+    else:
+      user_email = "anon"      
     
     self.builder.send_now({
       "method": request.method,
@@ -37,7 +42,7 @@ class HoneyMiddleware(MiddlewareMixin):
       "isAjax": request.is_ajax(),
       "isUserAuthenticated": request.user.is_authenticated(),
       #"username": request.user.username,
-      #"email": request.user.email,
+      "email": user_email,
       "host": request.get_host(),
       "ip": request.META['REMOTE_ADDR'],
       "responseTime_ms": response_time * 1000,
