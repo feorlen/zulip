@@ -30,8 +30,34 @@ from zerver.models import Realm, flush_per_request_caches, get_realm
 
 import libhoney
 import os
-mywritekey = os.environ["WRITEKEY"]
-libhoney.init(writekey=mywritekey, dataset="django-requests-prod")
+import configparser
+
+# getting writekey needs to be somewhere more rational
+
+#mywritekey = os.environ["WRITEKEY"]
+
+DEPLOY_ROOT = os.path.join(os.path.realpath(os.path.dirname(__file__)), '..')
+
+config_file = configparser.RawConfigParser()
+config_file.read("/etc/zulip/zulip.conf")
+
+# Whether this instance of Zulip is running in a production environment.
+PRODUCTION = config_file.has_option('machine', 'deploy_type')
+DEVELOPMENT = not PRODUCTION
+
+secrets_file = configparser.RawConfigParser()
+if PRODUCTION:
+    secrets_file.read("/etc/zulip/zulip-secrets.conf")
+else:
+    secrets_file.read(os.path.join(DEPLOY_ROOT, "zproject/dev-secrets.conf"))
+    
+    def get_secret(key: str) -> Optional[str]:
+        if secrets_file.has_option('secrets', key):
+            return secrets_file.get('secrets', key)
+        return None                
+
+HONEYCOMB_WRITEKEY = get_secret("honeycomb_writekey")
+libhoney.init(writekey=HONEYCOMB_WRITEKEY, dataset="django-requests-prod")
 
 logger = logging.getLogger('zulip.requests')
 
